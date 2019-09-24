@@ -74,24 +74,20 @@ CREATE TABLE parcours(
 #------------------------------------------------------------
 
 CREATE TABLE passer(
-        matricule                 Int NOT NULL ,
-        idObstacle                Int NOT NULL ,
-        matricule_soldat          Int NOT NULL ,
-        matricule_soldat_passer   Int NOT NULL ,
-        idParcours                Int NOT NULL ,
-        matricule_soldat_passer_1 Int NOT NULL ,
-        noteInstructeur           Int NOT NULL ,
-        temps                     Time NOT NULL ,
-        datePass                  Date NOT NULL ,
-        noteFinale                Int NOT NULL
-	,CONSTRAINT passer_PK PRIMARY KEY (matricule,idObstacle,matricule_soldat,matricule_soldat_passer,idParcours,matricule_soldat_passer_1)
+        matricule        Int NOT NULL ,
+        idObstacle       Int NOT NULL ,
+        idParcours       Int NOT NULL ,
+        matricule_soldat Int NOT NULL ,
+        noteInstructeur  Int NOT NULL ,
+        temps            Time NOT NULL ,
+        datePass         Date NOT NULL ,
+        noteFinale       Int NOT NULL
+	,CONSTRAINT passer_PK PRIMARY KEY (matricule,idObstacle,idParcours,matricule_soldat)
 
 	,CONSTRAINT passer_soldat_FK FOREIGN KEY (matricule) REFERENCES soldat(matricule)
 	,CONSTRAINT passer_obstacle0_FK FOREIGN KEY (idObstacle) REFERENCES obstacle(idObstacle)
-	,CONSTRAINT passer_soldat1_FK FOREIGN KEY (matricule_soldat) REFERENCES soldat(matricule)
-	,CONSTRAINT passer_soldat2_FK FOREIGN KEY (matricule_soldat_passer) REFERENCES soldat(matricule)
-	,CONSTRAINT passer_parcours3_FK FOREIGN KEY (idParcours) REFERENCES parcours(idParcours)
-	,CONSTRAINT passer_soldat4_FK FOREIGN KEY (matricule_soldat_passer_1) REFERENCES soldat(matricule)
+	,CONSTRAINT passer_parcours1_FK FOREIGN KEY (idParcours) REFERENCES parcours(idParcours)
+	,CONSTRAINT passer_soldat2_FK FOREIGN KEY (matricule_soldat) REFERENCES soldat(matricule)
 )ENGINE=InnoDB;
 
 
