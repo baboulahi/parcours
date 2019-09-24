@@ -1,0 +1,111 @@
+#------------------------------------------------------------
+#        Script MySQL.
+#------------------------------------------------------------
+
+
+#------------------------------------------------------------
+# Table: soldat
+#------------------------------------------------------------
+
+CREATE TABLE soldat(
+        matricule Int  Auto_increment  NOT NULL ,
+        nom       Varchar (20) NOT NULL ,
+        prenom    Varchar (20) NOT NULL ,
+        email     Varchar (50) NOT NULL ,
+        grade     Varchar (30) NOT NULL
+	,CONSTRAINT soldat_PK PRIMARY KEY (matricule)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: niveau
+#------------------------------------------------------------
+
+CREATE TABLE niveau(
+        idNiveau Int  Auto_increment  NOT NULL ,
+        libelle  Varchar (20) NOT NULL ,
+        bonus    Int NOT NULL
+	,CONSTRAINT niveau_PK PRIMARY KEY (idNiveau)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: role
+#------------------------------------------------------------
+
+CREATE TABLE role(
+        idRole  Int  Auto_increment  NOT NULL ,
+        nomRole Varchar (10) NOT NULL
+	,CONSTRAINT role_PK PRIMARY KEY (idRole)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: obstacle
+#------------------------------------------------------------
+
+CREATE TABLE obstacle(
+        idObstacle   Int  Auto_increment  NOT NULL ,
+        nomObstacle  Varchar (20) NOT NULL ,
+        noteMinimale Int NOT NULL ,
+        idNiveau     Int NOT NULL
+	,CONSTRAINT obstacle_PK PRIMARY KEY (idObstacle)
+
+	,CONSTRAINT obstacle_niveau_FK FOREIGN KEY (idNiveau) REFERENCES niveau(idNiveau)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: parcours
+#------------------------------------------------------------
+
+CREATE TABLE parcours(
+        idParcours  Int  Auto_increment  NOT NULL ,
+        nomParcours Varchar (10) NOT NULL ,
+        idObstacle  Int
+	,CONSTRAINT parcours_PK PRIMARY KEY (idParcours)
+
+	,CONSTRAINT parcours_obstacle_FK FOREIGN KEY (idObstacle) REFERENCES obstacle(idObstacle)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: passer
+#------------------------------------------------------------
+
+CREATE TABLE passer(
+        matricule                 Int NOT NULL ,
+        idObstacle                Int NOT NULL ,
+        matricule_soldat          Int NOT NULL ,
+        matricule_soldat_passer   Int NOT NULL ,
+        idParcours                Int NOT NULL ,
+        matricule_soldat_passer_1 Int NOT NULL ,
+        noteInstructeur           Int NOT NULL ,
+        temps                     Time NOT NULL ,
+        datePass                  Date NOT NULL ,
+        noteFinale                Int NOT NULL
+	,CONSTRAINT passer_PK PRIMARY KEY (matricule,idObstacle,matricule_soldat,matricule_soldat_passer,idParcours,matricule_soldat_passer_1)
+
+	,CONSTRAINT passer_soldat_FK FOREIGN KEY (matricule) REFERENCES soldat(matricule)
+	,CONSTRAINT passer_obstacle0_FK FOREIGN KEY (idObstacle) REFERENCES obstacle(idObstacle)
+	,CONSTRAINT passer_soldat1_FK FOREIGN KEY (matricule_soldat) REFERENCES soldat(matricule)
+	,CONSTRAINT passer_soldat2_FK FOREIGN KEY (matricule_soldat_passer) REFERENCES soldat(matricule)
+	,CONSTRAINT passer_parcours3_FK FOREIGN KEY (idParcours) REFERENCES parcours(idParcours)
+	,CONSTRAINT passer_soldat4_FK FOREIGN KEY (matricule_soldat_passer_1) REFERENCES soldat(matricule)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: jouer
+#------------------------------------------------------------
+
+CREATE TABLE jouer(
+        idRole    Int NOT NULL ,
+        matricule Int NOT NULL
+	,CONSTRAINT jouer_PK PRIMARY KEY (idRole,matricule)
+
+	,CONSTRAINT jouer_role_FK FOREIGN KEY (idRole) REFERENCES role(idRole)
+	,CONSTRAINT jouer_soldat0_FK FOREIGN KEY (matricule) REFERENCES soldat(matricule)
+)ENGINE=InnoDB;
+
+
